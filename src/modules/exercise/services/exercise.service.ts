@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ExerciseRepository } from '../repositories/exercise.repository';
 import { CreateExerciseDTO } from '../dtos/requests/create-exercise.dto';
 import { GetExercisesFilterDTO } from '../dtos/requests/filter-exercise.dto';
+import { UpdateExerciseDTO } from '../dtos/requests/update-exercise.dto';
 
 @Injectable()
 export class ExerciseService {
@@ -68,5 +69,25 @@ export class ExerciseService {
       where.targetMuscle = filters.targetMuscle;
     }
     return this.exerciseRepository.getWithPagination(pageNumber, take, where);
+  }
+
+  async updateExercise(dto: UpdateExerciseDTO, id: string) {
+    const exercise = await this.exerciseRepository.getById(id);
+
+    if (!exercise) {
+      throw new NotFoundException('Exercise not found');
+    }
+
+    return this.exerciseRepository.update(dto, id);
+  }
+
+  async deleteExercise(id: string) {
+    const exercise = await this.exerciseRepository.getById(id);
+
+    if (!exercise) {
+      throw new NotFoundException('Exercise not found');
+    }
+    await this.exerciseRepository.delete(id);
+    return;
   }
 }

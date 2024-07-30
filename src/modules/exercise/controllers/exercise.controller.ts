@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Logger,
   Param,
+  Patch,
   Post,
   Query,
   Res,
@@ -15,14 +17,14 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Exercise } from '../dtos/exercise.dto';
 import { ExerciseService } from '../services/exercise.service';
 import { GetExercisesFilterDTO } from '../dtos/requests/filter-exercise.dto';
+import { UpdateExerciseDTO } from '../dtos/requests/update-exercise.dto';
 
 @ApiTags('Exercises')
 @Controller('exercises')
 export class ExerciseController {
   private readonly logger = new Logger('Exercises Controller');
 
-  constructor(private readonly exerciseService: ExerciseService) {
-  }
+  constructor(private readonly exerciseService: ExerciseService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new exercise' })
@@ -87,7 +89,8 @@ export class ExerciseController {
     @Query('targetMuscle') targetMuscle: string,
     @Res() response: Response,
   ) {
-    const exercises = await this.exerciseService.getByTargetMuscle(targetMuscle);
+    const exercises =
+      await this.exerciseService.getByTargetMuscle(targetMuscle);
     return response.status(HttpStatus.OK).json({
       data: exercises,
       status: HttpStatus.OK,
@@ -101,5 +104,24 @@ export class ExerciseController {
       data: exercise,
       status: HttpStatus.OK,
     });
+  }
+
+  @Patch(':id')
+  async updateExercise(
+    @Param('id') id: string,
+    @Res() response: Response,
+    @Body() dto: UpdateExerciseDTO,
+  ) {
+    const updatedExercise = await this.exerciseService.updateExercise(dto, id);
+    return response.status(HttpStatus.OK).json({
+      data: updatedExercise,
+      status: HttpStatus.OK,
+    });
+  }
+
+  @Delete(':id')
+  async deleteExercise(@Param('id') id: string, @Res() response: Response) {
+    await this.exerciseService.deleteExercise(id);
+    return response.status(HttpStatus.NO_CONTENT).json();
   }
 }

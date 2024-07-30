@@ -1,11 +1,11 @@
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateExerciseDTO } from '../dtos/requests/create-exercise.dto';
 import { Injectable } from '@nestjs/common';
+import { UpdateExerciseDTO } from '../dtos/requests/update-exercise.dto';
 
 @Injectable()
 export class ExerciseRepository {
-  constructor(private prisma: PrismaService) {
-  }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: CreateExerciseDTO) {
     return this.prisma.exercise.create({
@@ -55,6 +55,17 @@ export class ExerciseRepository {
       },
       orderBy: { name: 'asc' },
     });
+  }
+
+  async update(data: UpdateExerciseDTO, id: string) {
+    return this.prisma.exercise.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    return this.prisma.exercise.delete({ where: { id } });
   }
 
   private applyInsensitiveFilters(filters: any) {
