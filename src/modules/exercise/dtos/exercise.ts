@@ -1,4 +1,6 @@
 import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
+import { ExerciseType } from '../enums/ExerciseType';
+import { Difficulty } from '../enums/difficulty.enum';
 
 export class Exercise {
   @ApiResponseProperty()
@@ -8,10 +10,10 @@ export class Exercise {
   name: string;
 
   @ApiProperty()
-  difficulty: number;
+  difficulty: Difficulty;
 
   @ApiProperty()
-  type: string;
+  type: ExerciseType;
 
   @ApiProperty()
   targetMuscle: string;

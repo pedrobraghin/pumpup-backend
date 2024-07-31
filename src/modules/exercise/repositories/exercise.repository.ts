@@ -2,6 +2,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateExerciseDTO } from '../dtos/requests/create-exercise.dto';
 import { Injectable } from '@nestjs/common';
 import { UpdateExerciseDTO } from '../dtos/requests/update-exercise.dto';
+import { GetExercisesFilterDTO } from '../dtos/requests/filter-exercise.dto';
 
 @Injectable()
 export class ExerciseRepository {
@@ -39,20 +40,15 @@ export class ExerciseRepository {
     });
   }
 
-  async getWithPagination(skip: number, take: number, filters: any) {
-    return this.prisma.exercise.findMany({
-      skip,
-      take,
-      where: this.applyInsensitiveFilters(filters),
-    });
-  }
+  async search(filters: GetExercisesFilterDTO) {
+    const { skip, exercisesPerPage, ...filterCriteria } = filters;
 
-  async search(name: string, filters: any) {
     return this.prisma.exercise.findMany({
       where: {
-        ...this.applyInsensitiveFilters(filters),
-        name: { contains: name, mode: 'insensitive' },
+        ...this.applyInsensitiveFilters(filterCriteria),
       },
+      skip,
+      take: exercisesPerPage,
       orderBy: { name: 'asc' },
     });
   }
@@ -68,14 +64,14 @@ export class ExerciseRepository {
     return this.prisma.exercise.delete({ where: { id } });
   }
 
-  private applyInsensitiveFilters(filters: any) {
-    return Object.keys(filters).reduce((acc, key) => {
-      if (typeof filters[key] === 'string') {
-        acc[key] = { contains: filters[key], mode: 'insensitive' };
-      } else {
-        acc[key] = filters[key];
-      }
-      return acc;
-    }, {});
+  private applyInsensitiveFilters(filters: Record<string, any>) {
+    return Object.fromEntries(
+      Object.entries(filters).map(([key, value]) => [
+        key,
+        typeof value === 'string'
+          ? { contains: value, mode: 'insensitive' }
+          : value,
+      ]),
+    );
   }
 }

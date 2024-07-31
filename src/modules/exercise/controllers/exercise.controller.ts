@@ -14,7 +14,7 @@ import {
 import { CreateExerciseDTO } from '../dtos/requests/create-exercise.dto';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Exercise } from '../dtos/exercise.dto';
+import { Exercise } from '../dtos/exercise';
 import { ExerciseService } from '../services/exercise.service';
 import { GetExercisesFilterDTO } from '../dtos/requests/filter-exercise.dto';
 import { UpdateExerciseDTO } from '../dtos/requests/update-exercise.dto';
@@ -26,7 +26,6 @@ export class ExerciseController {
 
   constructor(private readonly exerciseService: ExerciseService) {}
 
-  @Post()
   @ApiOperation({ summary: 'Create a new exercise' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -34,6 +33,7 @@ export class ExerciseController {
     type: Exercise,
   })
   @ApiBody({ type: CreateExerciseDTO })
+  @Post()
   async createExercise(
     @Body() dto: CreateExerciseDTO,
     @Res() response: Response,
@@ -46,38 +46,18 @@ export class ExerciseController {
     });
   }
 
-  @Get('search')
   @ApiOperation({ summary: 'Get all exercises' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Exercises',
     type: [Exercise],
   })
+  @Get('search')
   async getExercises(
     @Query() filters: GetExercisesFilterDTO,
     @Res() response: Response,
-    @Query('name') name?: string,
   ) {
-    const exercises = await this.exerciseService.searchExercises(name, filters);
-    return response.status(HttpStatus.OK).json({
-      data: exercises,
-      status: HttpStatus.OK,
-    });
-  }
-
-  @Get('page/:pageNumber')
-  async getWithPagination(
-    @Query() filters: GetExercisesFilterDTO,
-    @Query('take') take: number,
-    @Param('pageNumber') pageNumber: number,
-    @Res() response: Response,
-  ) {
-    const exercises = await this.exerciseService.getWithPagination(
-      pageNumber,
-      take,
-      filters,
-    );
-
+    const exercises = await this.exerciseService.getExercises(filters);
     return response.status(HttpStatus.OK).json({
       data: exercises,
       status: HttpStatus.OK,

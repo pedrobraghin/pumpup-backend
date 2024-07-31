@@ -1,5 +1,6 @@
-import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsUrl, Max, Min } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Difficulty } from '../../enums/difficulty.enum';
 
 export class UpdateExerciseDTO {
   @ApiPropertyOptional()
@@ -12,7 +13,7 @@ export class UpdateExerciseDTO {
   @IsInt()
   @Min(1)
   @Max(3)
-  difficulty?: number;
+  difficulty?: Difficulty;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -26,6 +27,6 @@ export class UpdateExerciseDTO {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString()
+  @IsUrl()
   image?: string;
 }
