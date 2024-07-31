@@ -40,11 +40,11 @@ export class GetExercisesFilterDTO {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  skip?: number;
+  page?: number;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  exercisesPerPage?: number;
+  limit?: number;
 }

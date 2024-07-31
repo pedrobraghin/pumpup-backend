@@ -41,14 +41,14 @@ export class ExerciseRepository {
   }
 
   async search(filters: GetExercisesFilterDTO) {
-    const { skip, exercisesPerPage, ...filterCriteria } = filters;
+    const { page, limit, ...filterCriteria } = filters;
 
     return this.prisma.exercise.findMany({
       where: {
         ...this.applyInsensitiveFilters(filterCriteria),
       },
-      skip,
-      take: exercisesPerPage,
+      skip: page,
+      take: limit,
       orderBy: { name: 'asc' },
     });
   }

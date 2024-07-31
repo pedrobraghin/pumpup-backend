@@ -19,15 +19,15 @@ export function buildExerciseFilters(filters: GetExercisesFilterDTO) {
     where.targetMuscle = filters.targetMuscle;
   }
 
-  if (filters.exercisesPerPage) {
-    where.exercisesPerPage = filters.exercisesPerPage;
+  if (filters.limit) {
+    where.limit = filters.limit;
   }
 
-  if (filters.skip) {
-    if (!where.exercisesPerPage) {
-      where.exercisesPerPage = 15;
+  if (filters.page) {
+    if (!where.limit) {
+      where.limit = 15;
     }
-    where.skip = Number(filters.skip - 1) * where.exercisesPerPage;
+    where.page = Number(filters.page - 1) * where.limit;
   }
   return where;
 }
