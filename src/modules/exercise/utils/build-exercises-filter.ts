@@ -20,10 +20,17 @@ export function buildExerciseFilters(filters: GetExercisesFilterDTO) {
   }
 
   if (filters.limit) {
+    if (filters.limit <= 0) {
+      filters.limit = 15;
+    }
     where.limit = filters.limit;
   }
 
   if (filters.page) {
+    if (filters.page <= 0) {
+      filters.page = 1;
+    }
+
     if (!where.limit) {
       where.limit = 15;
     }
