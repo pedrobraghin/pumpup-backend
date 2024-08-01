@@ -1,4 +1,5 @@
 import { GetExercisesFilterDTO } from '../dtos/requests/filter-exercise.dto';
+import { paginationItemLimit } from '../../../shared/consts';
 
 export function buildExerciseFilters(filters: GetExercisesFilterDTO) {
   const where: Record<string, any> = {};
@@ -21,7 +22,7 @@ export function buildExerciseFilters(filters: GetExercisesFilterDTO) {
 
   if (filters.limit) {
     if (filters.limit <= 0) {
-      filters.limit = 15;
+      filters.limit = paginationItemLimit;
     }
     where.limit = filters.limit;
   }
@@ -32,7 +33,7 @@ export function buildExerciseFilters(filters: GetExercisesFilterDTO) {
     }
 
     if (!where.limit) {
-      where.limit = 15;
+      where.limit = paginationItemLimit;
     }
     where.page = Number(filters.page - 1) * where.limit;
   }
