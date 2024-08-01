@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
+import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
 
 @Injectable()
 export class ImageRepository {
@@ -21,9 +22,18 @@ export class ImageRepository {
     });
   }
 
-  async getAllImages(format?: string) {
+  async getAllImages() {
     return this.prisma.image.findMany({
-      where: { format },
+      orderBy: { bytes: 'asc' },
+    });
+  }
+
+  async getFilteredImages(query: GetImagesQueryDTO) {
+    return this.prisma.image.findMany({
+      where: { format: query.format },
+      skip: query.page,
+      take: query.limit,
+      orderBy: { bytes: 'asc' },
     });
   }
 

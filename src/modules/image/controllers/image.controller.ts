@@ -16,6 +16,7 @@ import { ImageService } from '../services/image.service';
 import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
 import { Response } from 'express';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
+import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
 
 @ApiTags('Images')
 @Controller('images')
@@ -50,17 +51,17 @@ export class ImageController {
   @Get()
   async getAllImages(
     @Res() response: Response,
-    @Query('format') format?: string,
+    @Query() query: GetImagesQueryDTO,
   ) {
-    const images = await this.imageService.getAllImages(format);
+    const images = await this.imageService.getAllImages(query);
     return response.status(HttpStatus.OK).json({
       data: images,
       status: HttpStatus.OK,
     });
   }
 
-  @Get('signed_url/:publicId')
-  async getSignedUrl(
+  @Post('signed_url/:publicId')
+  async generateSignedUrl(
     @Param('publicId') publicId: string,
     @Res() response: Response,
   ) {

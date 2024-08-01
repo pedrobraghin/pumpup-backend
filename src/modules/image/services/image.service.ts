@@ -7,6 +7,8 @@ import { ImageRepository } from '../repositories/image.repository';
 import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
 import { v2 as cloudinary } from 'cloudinary';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
+import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
+import { paginationItemLimit } from '../../../shared/consts';
 
 @Injectable()
 export class ImageService {
@@ -31,12 +33,21 @@ export class ImageService {
     return image;
   }
 
-  async getAllImages(format?: string) {
-    if (format) {
-      return this.imageRepository.getAllImages(format);
-    }
+  async getAllImages(query: GetImagesQueryDTO) {
+    if (query.page) {
+      if (query.page <= 0) {
+        query.page = 1;
+      }
 
-    return this.imageRepository.getAllImages();
+      if (!query.limit) {
+        query.limit = paginationItemLimit;
+      }
+      query.page = Number(query.page - 1) * query.limit;
+    }
+    if (!query) {
+      return this.imageRepository.getAllImages();
+    }
+    return this.imageRepository.getFilteredImages(query);
   }
 
   async generateSignedUrl(publicId: string) {
