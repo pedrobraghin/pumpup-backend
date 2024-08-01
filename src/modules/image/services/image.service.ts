@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { ImageRepository } from '../repositories/image.repository';
 import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
-import { v2 as cloudinary } from 'cloudinary';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
 import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
 import { paginationItemLimit } from '../../../shared/consts';
+import { generateSignedUrlUtil } from '../utils/generateSignedUrl.util';
 
 @Injectable()
 export class ImageService {
@@ -51,25 +51,7 @@ export class ImageService {
   }
 
   async generateSignedUrl(publicId: string) {
-    const timestamp = Math.round(new Date().getTime() / 1000);
-    const signature = cloudinary.utils.api_sign_request(
-      {
-        timestamp,
-        public_id: publicId,
-      },
-      process.env.CLOUDINARY_API_SECRET,
-    );
-
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/upload`;
-
-    const params = new URLSearchParams({
-      signature,
-      timestamp: timestamp.toString(),
-      public_id: publicId,
-      api_key: process.env.CLOUDINARY_API_KEY,
-    }).toString();
-
-    return `${uploadUrl}?${params}`;
+    return generateSignedUrlUtil(publicId);
   }
 
   async updateImage(id: string, dto: UpdateImageDTO) {
