@@ -10,11 +10,13 @@ import {
 import { Difficulty } from '../../enums/difficulty.enum';
 import { Type } from 'class-transformer';
 import { ExerciseType } from '../../enums/ExerciseType';
+import { Sanitize } from '../../../../decorators/Sanitize.decorator';
 
 export class GetExercisesFilterDTO {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @Sanitize()
   name?: string;
 
   @ApiPropertyOptional()
@@ -29,11 +31,13 @@ export class GetExercisesFilterDTO {
   @IsOptional()
   @IsString()
   @IsIn([ExerciseType.CARDIO, ExerciseType.MUSCLE])
+  @Sanitize()
   type?: ExerciseType;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @Sanitize()
   targetMuscle?: string;
 
   @ApiPropertyOptional()

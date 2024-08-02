@@ -10,10 +10,12 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Difficulty } from '../../enums/difficulty.enum';
 import { ExerciseType } from '../../enums/ExerciseType';
+import { Sanitize } from '../../../../decorators/Sanitize.decorator';
 
 export class CreateExerciseDTO {
   @ApiProperty()
   @IsString()
+  @Sanitize()
   name: string;
 
   @ApiProperty()
@@ -25,6 +27,7 @@ export class CreateExerciseDTO {
   @ApiProperty()
   @IsString()
   @IsIn([ExerciseType.CARDIO, ExerciseType.MUSCLE])
+  @Sanitize()
   type: ExerciseType;
 
   @ApiProperty()
@@ -34,13 +37,16 @@ export class CreateExerciseDTO {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @Sanitize()
   variation: string;
 
   @ApiProperty()
   @IsString()
+  @Sanitize()
   description: string;
 
   @ApiProperty()
   @IsUrl()
+  @Sanitize()
   image: string;
 }

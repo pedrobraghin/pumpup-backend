@@ -3,6 +3,10 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import * as csurf from 'csurf';
+import * as cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import * as process from 'node:process';
 
 const port = process.env.APP_PORT;
 
@@ -12,6 +16,15 @@ async function bootstrap() {
   app.setGlobalPrefix(process.env.APP_ROUTE_PREFIX);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.enableCors({
+    origin: [process.env.FRONTEND_REQUEST_URL, process.env.MOBILE_REQUEST_URL],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['POST', 'GET', 'DELETE', 'PATCH'],
+  });
+  app.use(cookieParser());
+  app.use(csurf({ cookie: true, value: (req) => req.csrfToken() }));
+  app.use(helmet());
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Pumpup API')
