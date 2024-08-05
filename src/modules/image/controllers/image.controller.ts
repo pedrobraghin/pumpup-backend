@@ -60,7 +60,7 @@ export class ImageController {
     });
   }
 
-  @Post('signed_url/:publicId')
+  @Get('signed_url/:publicId')
   async generateSignedUrl(
     @Param('publicId') publicId: string,
     @Res() response: Response,
@@ -85,7 +85,7 @@ export class ImageController {
     });
   }
 
-  @Delete()
+  @Delete(':id')
   async deleteImage(@Param('id') id: string, @Res() response: Response) {
     await this.imageService.deleteImage(id);
     return response.status(HttpStatus.NO_CONTENT).json();
