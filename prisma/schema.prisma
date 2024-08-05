@@ -45,8 +45,8 @@ model User {
   name       String
   email      String
   providerId String   @map("provider_id")
-  active     Boolean
-  picture    String
+  active     Boolean  @default(true)
+  pictureUrl String?  @map("picture_url")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 }
