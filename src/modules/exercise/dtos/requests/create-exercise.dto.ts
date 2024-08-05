@@ -1,5 +1,13 @@
-import { IsIn, IsInt, IsString, IsUrl, Max, Min } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsIn,
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Max,
+  Min,
+} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Difficulty } from '../../enums/difficulty.enum';
 import { ExerciseType } from '../../enums/ExerciseType';
 
@@ -22,6 +30,11 @@ export class CreateExerciseDTO {
   @ApiProperty()
   @IsString()
   targetMuscle: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  variation: string;
 
   @ApiProperty()
   @IsString()

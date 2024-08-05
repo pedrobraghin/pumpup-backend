@@ -27,6 +27,11 @@ export class UpdateExerciseDTO {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
+  variation?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsUrl()
   image?: string;
 }

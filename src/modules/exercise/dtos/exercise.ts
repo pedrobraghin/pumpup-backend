@@ -24,6 +24,9 @@ export class Exercise {
   @ApiProperty()
   image: string;
 
+  @ApiProperty()
+  variation: string;
+
   @ApiResponseProperty()
   createdAt: Date;
 
