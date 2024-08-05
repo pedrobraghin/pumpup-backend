@@ -10,7 +10,7 @@ export const generateSignedUrlUtil = (publicId: string) => {
     process.env.CLOUDINARY_API_SECRET,
   );
 
-  const uploadUrl = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/upload`;
+  const uploadUrl = process.env.CLOUDINARY_REQUEST_URL;
 
   const params = new URLSearchParams({
     signature,

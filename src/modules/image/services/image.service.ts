@@ -7,18 +7,20 @@ import { ImageRepository } from '../repositories/image.repository';
 import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
 import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
-import { paginationItemLimit } from '../../../shared/consts';
 import { generateSignedUrlUtil } from '../utils/generateSignedUrl.util';
+import { buildImageQuery } from '../utils/build-image-query.util';
 
 @Injectable()
 export class ImageService {
   constructor(private imageRepository: ImageRepository) {}
 
   async uploadImage(dto: UploadImageDTO) {
-    const checkPublicId = await this.imageRepository.getById(dto.publicId);
-    const checkAssetId = await this.imageRepository.getById(dto.assetId);
+    const image = await this.imageRepository.getByIds([
+      dto.publicId,
+      dto.assetId,
+    ]);
 
-    if (checkAssetId || checkPublicId) {
+    if (image) {
       throw new BadRequestException('Image already exists');
     }
 
@@ -26,7 +28,7 @@ export class ImageService {
   }
 
   async getImageById(id: string) {
-    const image = await this.imageRepository.getById(id);
+    const image = await this.imageRepository.getByIds([id]);
     if (!image) {
       throw new NotFoundException('Image not found');
     }
@@ -34,20 +36,12 @@ export class ImageService {
   }
 
   async getAllImages(query: GetImagesQueryDTO) {
-    if (query.page) {
-      if (query.page <= 0) {
-        query.page = 1;
-      }
-
-      if (!query.limit) {
-        query.limit = paginationItemLimit;
-      }
-      query.page = Number(query.page - 1) * query.limit;
-    }
-    if (!query) {
+    const buildedQuery = buildImageQuery(query);
+    if (!buildedQuery || Object.keys(buildedQuery).length === 0) {
       return this.imageRepository.getAllImages();
     }
-    return this.imageRepository.getFilteredImages(query);
+
+    return this.imageRepository.getFilteredImages(buildedQuery);
   }
 
   async generateSignedUrl(publicId: string) {
@@ -55,20 +49,20 @@ export class ImageService {
   }
 
   async updateImage(id: string, dto: UpdateImageDTO) {
-    const image = await this.imageRepository.getById(id);
+    const image = await this.imageRepository.getByIds([id]);
     if (!image) {
       throw new NotFoundException('Image not found');
     }
 
-    if (await this.imageRepository.getById(dto.publicId)) {
+    if (await this.imageRepository.getByIds([dto.publicId])) {
       throw new BadRequestException('Public id already registered');
     }
 
-    return await this.imageRepository.update(image.id, dto);
+    return await this.imageRepository.update(image[0].id, dto);
   }
 
   async deleteImage(id: string) {
-    const image = await this.imageRepository.getById(id);
+    const image = await this.imageRepository.getByIds([id]);
 
     if (!image) {
       throw new NotFoundException('Image not found');

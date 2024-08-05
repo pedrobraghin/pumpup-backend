@@ -14,9 +14,4 @@ export class UpdateImageDTO {
   @IsString()
   @Sanitize()
   url?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt()
-  bytes?: number;
 }

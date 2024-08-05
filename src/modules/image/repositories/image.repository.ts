@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
 import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
+import { defaultPage, paginationItemLimit } from '../../../shared/consts';
 
 @Injectable()
 export class ImageRepository {
@@ -14,10 +15,14 @@ export class ImageRepository {
     });
   }
 
-  async getById(id: string) {
+  async getByIds(ids: string[]) {
     return this.prisma.image.findFirst({
       where: {
-        OR: [{ id }, { assetId: id }, { publicId: id }],
+        OR: [
+          { id: { in: ids } },
+          { assetId: { in: ids } },
+          { publicId: { in: ids } },
+        ],
       },
     });
   }
@@ -25,6 +30,8 @@ export class ImageRepository {
   async getAllImages() {
     return this.prisma.image.findMany({
       orderBy: { bytes: 'asc' },
+      skip: defaultPage,
+      take: paginationItemLimit,
     });
   }
 
