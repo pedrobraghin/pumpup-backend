@@ -6,6 +6,7 @@ import {
 import { UserRepository } from '../repositories/user.repository';
 import { CreateUserDTO } from '../dtos/requests/create-user.dto';
 import { UpdateUserDTO } from '../dtos/requests/update-user.dto';
+import { UserBuilder } from '../builders/user.buider';
 
 @Injectable()
 export class UserService {
@@ -16,11 +17,14 @@ export class UserService {
     if (checkUserEmail) {
       throw new BadRequestException('Email already exists');
     }
-    return this.userRepository.create(dto);
+    const user = await this.userRepository.create(dto);
+    return UserBuilder.buildUser(user);
   }
 
   async getAllUsers() {
-    return this.userRepository.getAll();
+    const users = await this.userRepository.getAll();
+
+    return users.map((user) => UserBuilder.buildUser(user));
   }
 
   async getUser(id: string) {
@@ -28,7 +32,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return UserBuilder.buildUser(user);
   }
 
   async getUserByEmail(email: string) {
@@ -36,7 +40,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return UserBuilder.buildUser(user);
   }
 
   async updateUser(id: string, dto: UpdateUserDTO) {
@@ -44,7 +48,8 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return this.userRepository.updateUser(user.id, dto);
+    const updatedUser = await this.userRepository.updateUser(user.id, dto);
+    return UserBuilder.buildUser(updatedUser);
   }
 
   async inactivateUser(id: string) {
