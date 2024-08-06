@@ -1,11 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Logger,
   Param,
-  Patch,
   Post,
   Res,
 } from '@nestjs/common';
@@ -13,7 +13,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
 import { CreateUserDTO } from '../dtos/requests/create-user.dto';
 import { Response } from 'express';
-import { UpdateUserDTO } from '../dtos/requests/update-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -61,16 +60,12 @@ export class UserController {
     });
   }
 
-  @Patch(':id')
-  async updateUser(
-    @Param('id') id: string,
-    @Body() dto: UpdateUserDTO,
-    @Res() response: Response,
-  ) {
-    const updatedUser = await this.userService.updateUser(id, dto);
-    return response.status(HttpStatus.OK).json({
-      data: updatedUser,
-      status: HttpStatus.OK,
-    });
+  @Delete()
+  async inactivateUser(@Res() response: Response) {
+    await this.userService.inactivateUser(
+      'dae03eb8-a940-4d1b-94cc-f4a9ef72dffc',
+    );
+
+    return response.status(HttpStatus.NO_CONTENT).json();
   }
 }

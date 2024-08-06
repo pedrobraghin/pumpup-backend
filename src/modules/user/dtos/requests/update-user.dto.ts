@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { Sanitize } from '../../../../decorators/Sanitize.decorator';
 
 export class UpdateUserDTO {
@@ -8,11 +8,6 @@ export class UpdateUserDTO {
   @IsString()
   @Sanitize()
   name?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsBoolean()
-  active?: boolean;
 
   @ApiPropertyOptional()
   @IsOptional()

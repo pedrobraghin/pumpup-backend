@@ -46,4 +46,16 @@ export class UserService {
     }
     return this.userRepository.updateUser(user.id, dto);
   }
+
+  async inactivateUser(id: string) {
+    const user = await this.userRepository.getById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!user.active) {
+      throw new BadRequestException('User already inactive');
+    }
+    return this.userRepository.inactivate(user.id);
+  }
 }

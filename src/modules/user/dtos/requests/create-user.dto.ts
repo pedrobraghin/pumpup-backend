@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 import { Sanitize } from '../../../../decorators/Sanitize.decorator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -17,11 +17,6 @@ export class CreateUserDTO {
   @IsString()
   @Sanitize()
   providerId: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsBoolean()
-  active?: boolean;
 
   @ApiPropertyOptional()
   @IsOptional()

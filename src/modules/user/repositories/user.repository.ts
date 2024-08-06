@@ -39,4 +39,11 @@ export class UserRepository {
       data: dto,
     });
   }
+
+  async inactivate(id: string) {
+    return this.prisma.user.update({
+      where: { id },
+      data: { active: false },
+    });
+  }
 }
