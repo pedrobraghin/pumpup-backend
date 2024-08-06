@@ -27,9 +27,8 @@ export class UserRepository {
     });
   }
 
-  async getAll(name?: string, active?: boolean) {
+  async getAll() {
     return this.prisma.user.findMany({
-      where: { active, name: { contains: name } },
       orderBy: [{ name: 'asc' }, { active: 'desc' }],
     });
   }

@@ -7,10 +7,9 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Res,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
 import { CreateUserDTO } from '../dtos/requests/create-user.dto';
 import { Response } from 'express';
@@ -32,23 +31,9 @@ export class UserController {
     });
   }
 
-  @ApiQuery({
-    name: 'active',
-    type: Boolean,
-    required: false,
-  })
-  @ApiQuery({
-    name: 'name',
-    type: String,
-    required: false,
-  })
   @Get()
-  async getAllUsers(
-    @Res() response: Response,
-    @Query('active') active?: boolean,
-    @Query('name') name?: string,
-  ) {
-    const users = await this.userService.getAllUsers(name, active);
+  async getAllUsers(@Res() response: Response) {
+    const users = await this.userService.getAllUsers();
     return response.status(HttpStatus.OK).json({
       data: users,
       status: HttpStatus.OK,

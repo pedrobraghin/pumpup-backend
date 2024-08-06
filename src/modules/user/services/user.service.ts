@@ -19,8 +19,8 @@ export class UserService {
     return this.userRepository.create(dto);
   }
 
-  async getAllUsers(name?: string, active?: boolean) {
-    return this.userRepository.getAll(name, active);
+  async getAllUsers() {
+    return this.userRepository.getAll();
   }
 
   async getUser(id: string) {
