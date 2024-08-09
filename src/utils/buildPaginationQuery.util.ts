@@ -2,16 +2,13 @@ import { defaultPage, paginationItemLimit } from '../shared/consts';
 import { PaginationQueryDTO } from '../@types/pagination-query.dto';
 
 export function buildPaginationQuery(query: PaginationQueryDTO) {
-  if (query.page) {
-    if (query.page <= 0) {
-      query.page = defaultPage;
-    }
+  const result = { ...query };
 
-    if (!query.limit) {
-      query.limit = paginationItemLimit;
-    }
-    query.page = Number(query.page - defaultPage) * query.limit;
+  const page = result.page > 0 ? result.page : defaultPage;
+  const limit = result.limit || paginationItemLimit;
 
-    return query;
-  }
+  result.page = (page - 1) * limit;
+  result.limit = limit;
+
+  return result;
 }
