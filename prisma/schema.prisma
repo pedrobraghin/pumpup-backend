@@ -23,7 +23,7 @@ model Exercise {
 model Train {
   id        String   @id @default(uuid())
   name      String
-  weekday   Int?
+  weekday   Int
   userId    String   @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

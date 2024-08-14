@@ -3,7 +3,7 @@ import { IsInt, IsString, Max, Min } from 'class-validator';
 import { Sanitize } from '../../../../decorators/Sanitize.decorator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTrainDTO {
+export class CreateTrainRequestDTO {
   @ApiProperty()
   @IsString()
   @Sanitize()
@@ -15,9 +15,4 @@ export class CreateTrainDTO {
   @Max(6)
   @Sanitize()
   weekday: Weekday;
-
-  @ApiProperty()
-  @IsString()
-  @Sanitize()
-  userId: string;
 }

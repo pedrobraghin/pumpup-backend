@@ -1,27 +1,15 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TrainRepository } from '../repository/train.repository';
-import { CreateTrainDTO } from '../dtos/requests/create-train.dto';
-import { UserService } from '../../user/services/user.service';
 import { FilterTrainDTO } from '../dtos/requests/filter-train.dto';
 import { UpdateTrainDTO } from '../dtos/requests/update-train.dto';
+import { CreateTrainRequestDTO } from '../dtos/requests/create-train-request.dto';
 
 @Injectable()
 export class TrainService {
-  constructor(
-    private trainRepository: TrainRepository,
-    private userService: UserService,
-  ) {}
+  constructor(private trainRepository: TrainRepository) {}
 
-  async createTrain(data: CreateTrainDTO) {
-    const user = await this.userService.getUser(data.userId);
-    if (!user) {
-      throw new BadRequestException('You must be logged in to create a train');
-    }
-    return await this.trainRepository.create(data);
+  async createTrain(data: CreateTrainRequestDTO, userId: string) {
+    return await this.trainRepository.create({ ...data, userId });
   }
 
   async getTrainById(id: string) {

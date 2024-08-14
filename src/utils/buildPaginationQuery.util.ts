@@ -2,13 +2,14 @@ import { defaultPage, paginationItemLimit } from '../shared/consts';
 import { PaginationQueryDTO } from '../@types/pagination-query.dto';
 
 export function buildPaginationQuery(query: PaginationQueryDTO) {
-  const result = { ...query };
+  const page = Math.max(query.page ?? defaultPage, defaultPage);
 
-  const page = result.page > 0 ? result.page : defaultPage;
-  const limit = result.limit || paginationItemLimit;
+  const limit = query.limit ?? paginationItemLimit;
 
-  result.page = (page - 1) * limit;
-  result.limit = limit;
+  const offset = (page - 1) * limit;
 
-  return result;
+  return {
+    page: offset,
+    limit: limit,
+  };
 }

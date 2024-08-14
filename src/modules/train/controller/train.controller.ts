@@ -8,14 +8,15 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { TrainService } from '../service/train.service';
-import { CreateTrainDTO } from '../dtos/requests/create-train.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { FilterTrainDTO } from '../dtos/requests/filter-train.dto';
 import { UpdateTrainDTO } from '../dtos/requests/update-train.dto';
+import { CreateTrainRequestDTO } from '../dtos/requests/create-train-request.dto';
 
 @ApiTags('Trains')
 @Controller('trains')
@@ -23,8 +24,12 @@ export class TrainController {
   constructor(private trainService: TrainService) {}
 
   @Post()
-  async createTrain(@Body() dto: CreateTrainDTO, @Res() response: Response) {
-    const train = await this.trainService.createTrain(dto);
+  async createTrain(
+    @Body() data: CreateTrainRequestDTO,
+    @Res() response: Response,
+    @Req() request: Request,
+  ) {
+    const train = await this.trainService.createTrain(data, request.user.id);
     return response.status(HttpStatus.CREATED).json({
       data: train,
       status: HttpStatus.CREATED,
@@ -41,7 +46,7 @@ export class TrainController {
   }
 
   @Get(':id')
-  async getTrain(@Param('id') id: string, @Res() response: Response) {
+  async getTrainById(@Param('id') id: string, @Res() response: Response) {
     const train = await this.trainService.getTrainById(id);
     return response.status(HttpStatus.OK).json({
       data: train,

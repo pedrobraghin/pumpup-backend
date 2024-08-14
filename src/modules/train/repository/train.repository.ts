@@ -16,7 +16,7 @@ export class TrainRepository {
   }
 
   async getById(id: string) {
-    return this.prisma.train.findFirst({ where: { id } });
+    return this.prisma.train.findUnique({ where: { id } });
   }
 
   async searchTrain(dto: FilterTrainDTO) {
@@ -38,6 +38,6 @@ export class TrainRepository {
   }
 
   async delete(id: string) {
-    return this.prisma.train.findFirst({ where: { id } });
+    return this.prisma.train.delete({ where: { id } });
   }
 }
