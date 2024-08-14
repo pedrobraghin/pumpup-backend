@@ -8,16 +8,32 @@ datasource db {
 }
 
 model Exercise {
-  id           String   @id @default(uuid())
+  id           String        @id @default(uuid())
   name         String
-  difficulty   Int      @default(0)
+  difficulty   Int           @default(0)
   type         String
-  targetMuscle String   @map("target_muscle")
+  targetMuscle String        @map("target_muscle")
   description  String
   image        String
   variation    String?
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  muscleSeries MuscleSerie[]
+}
+
+model MuscleSerie {
+  id               String   @id @default(uuid())
+  userId           String   @map("user_id")
+  type             Int      @default(1)
+  weight           Float
+  repetitionsCount Int      @map("repetitions_count")
+  exerciseId       String   @map("exercise_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  User             User     @relation(references: [id], fields: [userId])
+  Exercise         Exercise @relation(references: [id], fields: [exerciseId])
+
+  @@map("muscle_series")
 }
 
 model Train {
@@ -42,13 +58,14 @@ model Image {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  providerId String   @map("provider_id")
-  active     Boolean  @default(true)
-  pictureUrl String?  @map("picture_url")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  trains     Train[]
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  providerId   String        @map("provider_id")
+  active       Boolean       @default(true)
+  pictureUrl   String?       @map("picture_url")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  trains       Train[]
+  muscleSeries MuscleSerie[]
 }
