@@ -18,8 +18,6 @@ export class CardioSerieRepository {
         maxSpeed: dto.maxSpeed,
         intensity: dto.intensity,
         duration: dto.duration,
-        createdAt: new Date(),
-        updatedAt: new Date(),
         Exercise: {
           connect: { id: dto.exerciseId },
         },
@@ -40,7 +38,6 @@ export class CardioSerieRepository {
     intensity?: Intensity,
   ) {
     const { page, limit } = buildPaginationQuery(paginationQuery);
-    isNaN(intensity) ? (intensity = undefined) : intensity;
 
     return this.prisma.cardioSerie.findMany({
       where: { userId, intensity },

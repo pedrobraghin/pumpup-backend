@@ -61,7 +61,7 @@ model CardioSerie {
   intensity    Int      @default(1)
   duration     Int      @default(0)
   createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @map("updated_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
   User         User     @relation(fields: [userId], references: [id])
   Exercise     Exercise @relation(fields: [exerciseId], references: [id])
 
