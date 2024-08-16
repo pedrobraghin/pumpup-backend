@@ -6,6 +6,7 @@ import { ImageModule } from './modules/image/image.module';
 import { UserModule } from './modules/user/user.module';
 import { TrainModule } from './modules/train/train.module';
 import { MuscleSerieModule } from './modules/muscle-serie/muscle-serie.module';
+import { CardioSerieModule } from './modules/cardio-serie/cardio-serie.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MuscleSerieModule } from './modules/muscle-serie/muscle-serie.module';
     ImageModule,
     TrainModule,
     MuscleSerieModule,
+    CardioSerieModule,
   ],
   controllers: [],
   providers: [],
