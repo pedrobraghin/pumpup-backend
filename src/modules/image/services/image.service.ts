@@ -8,7 +8,7 @@ import { UploadImageDTO } from '../dtos/requests/upload-image.dto';
 import { UpdateImageDTO } from '../dtos/requests/update-image.dto';
 import { GetImagesQueryDTO } from '../dtos/requests/get-images-query.dto';
 import { generateSignedUrlUtil } from '../utils/generateSignedUrl.util';
-import { buildImageQuery } from '../utils/build-image-query.util';
+import { buildPaginationQuery } from '../../../utils/buildPaginationQuery.util';
 
 @Injectable()
 export class ImageService {
@@ -36,7 +36,7 @@ export class ImageService {
   }
 
   async getAllImages(query: GetImagesQueryDTO) {
-    const buildedQuery = buildImageQuery(query);
+    const buildedQuery = buildPaginationQuery(query);
     if (!buildedQuery || Object.keys(buildedQuery).length === 0) {
       return this.imageRepository.getAllImages();
     }

@@ -4,6 +4,7 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { ExerciseModule } from './modules/exercise/exercise.module';
 import { ImageModule } from './modules/image/image.module';
 import { UserModule } from './modules/user/user.module';
+import { TrainModule } from './modules/train/train.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './modules/user/user.module';
     UserModule,
     ExerciseModule,
     ImageModule,
+    TrainModule,
   ],
   controllers: [],
   providers: [],

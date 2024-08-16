@@ -16,7 +16,7 @@ export class UserRepository {
   async getById(id: string) {
     return this.prisma.user.findFirst({
       where: {
-        OR: [{ id }, { providerId: id }],
+        id,
       },
     });
   }

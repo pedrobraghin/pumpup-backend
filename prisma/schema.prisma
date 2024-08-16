@@ -23,10 +23,11 @@ model Exercise {
 model Train {
   id        String   @id @default(uuid())
   name      String
-  weekday   String
+  weekday   Int
   userId    String   @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  User      User     @relation(references: [id], fields: [userId])
 }
 
 model Image {
@@ -49,4 +50,5 @@ model User {
   pictureUrl String?  @map("picture_url")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+  trains     Train[]
 }
