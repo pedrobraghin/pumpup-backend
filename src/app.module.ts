@@ -5,6 +5,7 @@ import { ExerciseModule } from './modules/exercise/exercise.module';
 import { ImageModule } from './modules/image/image.module';
 import { UserModule } from './modules/user/user.module';
 import { TrainModule } from './modules/train/train.module';
+import { MuscleSerieModule } from './modules/muscle-serie/muscle-serie.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TrainModule } from './modules/train/train.module';
     ExerciseModule,
     ImageModule,
     TrainModule,
+    MuscleSerieModule,
   ],
   controllers: [],
   providers: [],
