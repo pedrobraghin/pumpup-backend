@@ -12,21 +12,7 @@ export class CardioSerieRepository {
 
   async create(dto: CreateCardioSerieDTO) {
     return this.prisma.cardioSerie.create({
-      data: {
-        distance: dto.distance,
-        averageSpeed: dto.averageSpeed,
-        maxSpeed: dto.maxSpeed,
-        intensity: dto.intensity,
-        duration: dto.duration,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        Exercise: {
-          connect: { id: dto.exerciseId },
-        },
-        User: {
-          connect: { id: dto.userId },
-        },
-      },
+      data: dto,
     });
   }
 
@@ -40,7 +26,6 @@ export class CardioSerieRepository {
     intensity?: Intensity,
   ) {
     const { page, limit } = buildPaginationQuery(paginationQuery);
-    isNaN(intensity) ? (intensity = undefined) : intensity;
 
     return this.prisma.cardioSerie.findMany({
       where: { userId, intensity },

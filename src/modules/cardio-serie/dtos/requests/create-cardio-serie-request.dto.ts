@@ -1,11 +1,11 @@
 import { Intensity } from '../../enums/intensity.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsEnum,
   IsInt,
   IsNumber,
   IsOptional,
   IsString,
-  Max,
   Min,
 } from 'class-validator';
 import { Sanitize } from '../../../../decorators/Sanitize.decorator';
@@ -34,8 +34,7 @@ export class CreateCardioSerieRequestDTO {
   @ApiPropertyOptional()
   @IsOptional()
   @IsInt()
-  @Min(0)
-  @Max(2)
+  @IsEnum(Intensity)
   intensity?: Intensity;
 
   @ApiPropertyOptional()

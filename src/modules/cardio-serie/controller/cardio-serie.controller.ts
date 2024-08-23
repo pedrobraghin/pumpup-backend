@@ -18,6 +18,7 @@ import { Request, Response } from 'express';
 import { PaginationQueryDTO } from '../../../@types/pagination-query.dto';
 import { Intensity } from '../enums/intensity.enum';
 import { UpdateCardioSerieDTO } from '../dtos/requests/update-cardio-serie.dto';
+import { QueryCardioSerieDTO } from '../dtos/requests/query-cardio-serie.dto';
 
 @ApiTags('Cardio Series')
 @Controller('cardioSerie')
@@ -49,14 +50,13 @@ export class CardioSerieController {
   @Get()
   async getAllCardioSeries(
     @Res() response: Response,
-    @Query() paginationQuery: PaginationQueryDTO,
-    @Query('intensity') intensity: Intensity,
+    @Query() query: QueryCardioSerieDTO & PaginationQueryDTO,
     @Req() request: Request,
   ) {
     const cardioSeries = await this.cardioSerieService.getAllCardioSeries(
       request.user.id,
-      paginationQuery,
-      intensity,
+      query,
+      query.intensity,
     );
     return response.status(HttpStatus.OK).json({
       data: cardioSeries,
