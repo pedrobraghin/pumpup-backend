@@ -7,5 +7,6 @@ import { TrainRepository } from './repository/train.repository';
   providers: [TrainService, TrainRepository],
   controllers: [TrainController],
   imports: [],
+  exports: [TrainService],
 })
 export class TrainModule {}

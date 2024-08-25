@@ -23,17 +23,18 @@ model Exercise {
 }
 
 model User {
-  id           String        @id @default(uuid())
+  id           String         @id @default(uuid())
   name         String
-  email        String        @unique
-  providerId   String        @map("provider_id")
-  active       Boolean       @default(true)
-  pictureUrl   String?       @map("picture_url")
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
+  email        String         @unique
+  providerId   String         @map("provider_id")
+  active       Boolean        @default(true)
+  pictureUrl   String?        @map("picture_url")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
   trains       Train[]
   muscleSeries MuscleSerie[]
   cardioSeries CardioSerie[]
+  TrainHistory TrainHistory[]
 }
 
 model MuscleSerie {
@@ -68,14 +69,29 @@ model CardioSerie {
   @@map("cardio_series")
 }
 
-model Train {
+model TrainHistory {
   id        String   @id @default(uuid())
-  name      String
   userId    String   @map("user_id")
+  trainId   String   @map("train_id")
+  duration  Int
+  volume    Float
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  weekday   Int
   User      User     @relation(fields: [userId], references: [id])
+  Train     Train    @relation(fields: [trainId], references: [id])
+
+  @@map("train_histories")
+}
+
+model Train {
+  id           String         @id @default(uuid())
+  name         String
+  userId       String         @map("user_id")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  weekday      Int
+  User         User           @relation(fields: [userId], references: [id])
+  TrainHistory TrainHistory[]
 }
 
 model Image {
