@@ -8,6 +8,7 @@ import { TrainModule } from './modules/train/train.module';
 import { MuscleSerieModule } from './modules/muscle-serie/muscle-serie.module';
 import { CardioSerieModule } from './modules/cardio-serie/cardio-serie.module';
 import { TrainHistoryModule } from './modules/train-history/train-history.module';
+import { TrainHistoryExerciseModule } from './modules/train-history-exercise/train-history-exercise.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { TrainHistoryModule } from './modules/train-history/train-history.module
     MuscleSerieModule,
     CardioSerieModule,
     TrainHistoryModule,
+    TrainHistoryExerciseModule,
   ],
   controllers: [],
   providers: [],

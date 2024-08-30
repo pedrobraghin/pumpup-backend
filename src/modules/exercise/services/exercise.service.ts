@@ -18,8 +18,7 @@ export class ExerciseService {
   }
 
   async getExerciseById(id: string) {
-    const exercise = this.exerciseRepository.getById(id);
-
+    const exercise = await this.exerciseRepository.getById(id);
     if (!exercise) {
       throw new NotFoundException('Exercise not found');
     }
