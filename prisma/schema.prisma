@@ -8,33 +8,35 @@ datasource db {
 }
 
 model Exercise {
-  id           String        @id @default(uuid())
-  name         String
-  difficulty   Int           @default(0)
-  type         String
-  targetMuscle String        @map("target_muscle")
-  description  String
-  image        String
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  variation    String?
-  muscleSeries MuscleSerie[]
-  CardioSerie  CardioSerie[]
+  id                   String                 @id @default(uuid())
+  name                 String
+  difficulty           Int                    @default(0)
+  type                 String
+  targetMuscle         String                 @map("target_muscle")
+  description          String
+  image                String
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @updatedAt @map("updated_at")
+  variation            String?
+  muscleSeries         MuscleSerie[]
+  CardioSerie          CardioSerie[]
+  TrainHistoryExercise TrainHistoryExercise[]
 }
 
 model User {
-  id           String         @id @default(uuid())
-  name         String
-  email        String         @unique
-  providerId   String         @map("provider_id")
-  active       Boolean        @default(true)
-  pictureUrl   String?        @map("picture_url")
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  trains       Train[]
-  muscleSeries MuscleSerie[]
-  cardioSeries CardioSerie[]
-  TrainHistory TrainHistory[]
+  id                   String                 @id @default(uuid())
+  name                 String
+  email                String                 @unique
+  providerId           String                 @map("provider_id")
+  active               Boolean                @default(true)
+  pictureUrl           String?                @map("picture_url")
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @updatedAt @map("updated_at")
+  trains               Train[]
+  muscleSeries         MuscleSerie[]
+  cardioSeries         CardioSerie[]
+  TrainHistory         TrainHistory[]
+  TrainHistoryExercise TrainHistoryExercise[]
 }
 
 model MuscleSerie {
@@ -70,17 +72,34 @@ model CardioSerie {
 }
 
 model TrainHistory {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  trainId   String   @map("train_id")
-  duration  Int
-  volume    Float
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  User      User     @relation(fields: [userId], references: [id])
-  Train     Train    @relation(fields: [trainId], references: [id])
+  id                   String                 @id @default(uuid())
+  userId               String                 @map("user_id")
+  trainId              String                 @map("train_id")
+  duration             Int
+  volume               Float
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @updatedAt @map("updated_at")
+  User                 User                   @relation(fields: [userId], references: [id])
+  Train                Train                  @relation(fields: [trainId], references: [id])
+  TrainHistoryExercise TrainHistoryExercise[]
 
   @@map("train_histories")
+}
+
+model TrainHistoryExercise {
+  id             String       @id @default(uuid())
+  userId         String       @map("user_id")
+  exerciseId     String       @map("exercise_id")
+  trainHistoryId String       @map("train_history_id")
+  pauseTime      Int          @map("pause_time")
+  seriesCount    Int          @map("series_count")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  Exercise       Exercise     @relation(fields: [exerciseId], references: [id])
+  User           User         @relation(fields: [userId], references: [id])
+  TrainHistory   TrainHistory @relation(fields: [trainHistoryId], references: [id])
+
+  @@map("train_history_exercise")
 }
 
 model Train {
