@@ -19,13 +19,19 @@ export class TrainHistoryExerciseRepository {
     });
   }
 
-  async getMany(userId: string, id?: string) {
+  async getMany(userId: string) {
     return this.prisma.trainHistoryExercise.findMany({
       where: {
         userId,
-        ...(id && {
-          OR: [{ exerciseId: id }, { trainHistoryId: id }],
-        }),
+      },
+    });
+  }
+
+  async getManyByExerciseIdOrTrainHistoryId(userId: string, id: string) {
+    return this.prisma.trainHistoryExercise.findMany({
+      where: {
+        userId,
+        OR: [{ exerciseId: id }, { trainHistoryId: id }],
       },
     });
   }

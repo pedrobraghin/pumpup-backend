@@ -8,6 +8,7 @@ import { CreateTrainHistoryExerciseDTO } from '../dtos/requests/create-train-his
 import { TrainHistoryService } from '../../train-history/service/train-history.service';
 import { ExerciseService } from '../../exercise/services/exercise.service';
 import { UpdateTrainHistoryExerciseDTO } from '../dtos/requests/update-train-history-exercise.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TrainHistoryExerciseService {
@@ -31,9 +32,13 @@ export class TrainHistoryExerciseService {
     return this.trainHistoryExerciseRepository.create(dto, userId);
   }
 
-  async getManyById(userId: string, id?: string) {
-    const trainHistoryExercise =
-      await this.trainHistoryExerciseRepository.getMany(userId, id);
+  async getMany(userId: string, id?: string) {
+    const trainHistoryExercise = id
+      ? await this.trainHistoryExerciseRepository.getManyByExerciseIdOrTrainHistoryId(
+          userId,
+          id,
+        )
+      : await this.trainHistoryExerciseRepository.getMany(userId);
 
     if (!trainHistoryExercise) {
       throw new NotFoundException('Train history exercise not found');
@@ -69,8 +74,15 @@ export class TrainHistoryExerciseService {
   }
 
   async delete(userId: string, id: string) {
-    await this.getById(userId, id);
-
-    await this.trainHistoryExerciseRepository.delete(userId, id);
+    try {
+      await this.trainHistoryExerciseRepository.delete(userId, id);
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new NotFoundException('Train history exercise not found');
+        }
+      }
+      throw err;
+    }
   }
 }

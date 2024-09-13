@@ -1,8 +1,9 @@
 import { FilterTrainDTO } from '../dtos/requests/filter-train.dto';
 import { buildPaginationQuery } from '../../../utils/buildPaginationQuery.util';
+import { ITrainFilterConditions } from '../interfaces/ITrainFilterConditions.interface';
 
 export const buildTrainFilters = (dto: FilterTrainDTO) => {
-  const filterConditions: any = {};
+  const filterConditions: ITrainFilterConditions = {};
 
   if (dto.name) {
     filterConditions.name = { contains: dto.name, mode: 'insensitive' };
