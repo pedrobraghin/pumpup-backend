@@ -106,6 +106,6 @@ export class TrainHistoryExerciseController {
   ) {
     await this.trainHistoryExerciseService.delete(request.user.id, id);
 
-    return response.status(204).json();
+    return response.status(HttpStatus.NO_CONTENT).json();
   }
 }
