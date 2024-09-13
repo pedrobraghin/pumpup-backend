@@ -53,12 +53,10 @@ export class TrainHistoryExerciseController {
     @Req() request: Request,
     @Query('id') id?: string,
   ) {
-    const trainHistoryExercise =
-      await this.trainHistoryExerciseService.getManyById(
-        'ac430e58-5458-4315-98cd-bac36d1eb807',
-        id,
-      );
-
+    const trainHistoryExercise = await this.trainHistoryExerciseService.getMany(
+      request.user.id,
+      id,
+    );
     return response.status(HttpStatus.OK).json({
       data: trainHistoryExercise,
       status: HttpStatus.OK,
