@@ -99,7 +99,7 @@ model TrainHistoryExercise {
   User           User         @relation(fields: [userId], references: [id])
   TrainHistory   TrainHistory @relation(fields: [trainHistoryId], references: [id])
 
-  @@map("train_history_exercise")
+  @@map("train_history_exercises")
 }
 
 model Train {

@@ -31,9 +31,13 @@ export class TrainHistoryExerciseService {
     return this.trainHistoryExerciseRepository.create(dto, userId);
   }
 
-  async getManyById(userId: string, id?: string) {
-    const trainHistoryExercise =
-      await this.trainHistoryExerciseRepository.getMany(userId, id);
+  async getMany(userId: string, id?: string) {
+    const trainHistoryExercise = id
+      ? await this.trainHistoryExerciseRepository.getManyByExerciseIdOrTrainHistoryId(
+          userId,
+          id,
+        )
+      : await this.trainHistoryExerciseRepository.getMany(userId);
 
     if (!trainHistoryExercise) {
       throw new NotFoundException('Train history exercise not found');
