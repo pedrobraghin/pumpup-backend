@@ -7,5 +7,6 @@ import { ExerciseService } from './services/exercise.service';
   imports: [],
   controllers: [ExerciseController],
   providers: [ExerciseRepository, ExerciseService],
+  exports: [ExerciseService],
 })
 export class ExerciseModule {}

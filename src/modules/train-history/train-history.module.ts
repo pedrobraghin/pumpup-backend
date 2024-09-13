@@ -8,5 +8,6 @@ import { TrainModule } from '../train/train.module';
   providers: [TrainHistoryRepository, TrainHistoryService],
   controllers: [TrainHistoryController],
   imports: [TrainModule],
+  exports: [TrainHistoryService],
 })
 export class TrainHistoryModule {}
