@@ -24,19 +24,20 @@ model Exercise {
 }
 
 model User {
-  id                   String                 @id @default(uuid())
-  name                 String
-  email                String                 @unique
-  providerId           String                 @map("provider_id")
-  active               Boolean                @default(true)
-  pictureUrl           String?                @map("picture_url")
-  createdAt            DateTime               @default(now()) @map("created_at")
-  updatedAt            DateTime               @updatedAt @map("updated_at")
-  trains               Train[]
-  muscleSeries         MuscleSerie[]
-  cardioSeries         CardioSerie[]
-  TrainHistory         TrainHistory[]
-  TrainHistoryExercise TrainHistoryExercise[]
+  id                        String                      @id @default(uuid())
+  name                      String
+  email                     String                      @unique
+  providerId                String                      @map("provider_id")
+  active                    Boolean                     @default(true)
+  pictureUrl                String?                     @map("picture_url")
+  createdAt                 DateTime                    @default(now()) @map("created_at")
+  updatedAt                 DateTime                    @updatedAt @map("updated_at")
+  trains                    Train[]
+  muscleSeries              MuscleSerie[]
+  cardioSeries              CardioSerie[]
+  TrainHistory              TrainHistory[]
+  TrainHistoryExercise      TrainHistoryExercise[]
+  TrainHistoryExerciseSerie TrainHistoryExerciseSerie[]
 }
 
 model MuscleSerie {
@@ -87,19 +88,20 @@ model TrainHistory {
 }
 
 model TrainHistoryExercise {
-  id             String       @id @default(uuid())
-  userId         String       @map("user_id")
-  exerciseId     String       @map("exercise_id")
-  trainHistoryId String       @map("train_history_id")
-  pauseTime      Int          @map("pause_time")
-  seriesCount    Int          @map("series_count")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
-  Exercise       Exercise     @relation(fields: [exerciseId], references: [id])
-  User           User         @relation(fields: [userId], references: [id])
-  TrainHistory   TrainHistory @relation(fields: [trainHistoryId], references: [id])
+  id                        String                      @id @default(uuid())
+  userId                    String                      @map("user_id")
+  exerciseId                String                      @map("exercise_id")
+  trainHistoryId            String                      @map("train_history_id")
+  pauseTime                 Int                         @map("pause_time")
+  seriesCount               Int                         @map("series_count")
+  createdAt                 DateTime                    @default(now()) @map("created_at")
+  updatedAt                 DateTime                    @updatedAt @map("updated_at")
+  Exercise                  Exercise                    @relation(fields: [exerciseId], references: [id])
+  User                      User                        @relation(fields: [userId], references: [id])
+  TrainHistory              TrainHistory                @relation(fields: [trainHistoryId], references: [id])
+  TrainHistoryExerciseSerie TrainHistoryExerciseSerie[]
 
-  @@map("train_history_exercises")
+  @@map("train_history_exercise")
 }
 
 model Train {
@@ -111,6 +113,20 @@ model Train {
   weekday      Int
   User         User           @relation(fields: [userId], references: [id])
   TrainHistory TrainHistory[]
+}
+
+model TrainHistoryExerciseSerie {
+  id                     String               @id @default(uuid())
+  trainHistoryExerciseId String               @map("train_history_exercise_id")
+  userId                 String               @map("user_id")
+  exerciseSerieId        String               @map("exercise_serie_id")
+  exerciseType           String               @map("exercise_type")
+  createdAt              DateTime             @default(now()) @map("created_at")
+  updatedAt              DateTime             @updatedAt @map("updated_at")
+  User                   User                 @relation(fields: [userId], references: [id])
+  TrainHistoryExercise   TrainHistoryExercise @relation(fields: [trainHistoryExerciseId], references: [id])
+
+  @@map("train_history_exercise-series")
 }
 
 model Image {

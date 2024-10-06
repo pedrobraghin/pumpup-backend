@@ -4,7 +4,7 @@ import { CardioSerieService } from './service/cardio-serie.service';
 import { CardioSerieController } from './controller/cardio-serie.controller';
 
 @Module({
-  exports: [],
+  exports: [CardioSerieService],
   imports: [],
   providers: [CardioSerieRepository, CardioSerieService],
   controllers: [CardioSerieController],
