@@ -7,7 +7,7 @@ import { ExerciseModule } from '../exercise/exercise.module';
 
 @Module({
   imports: [TrainHistoryModule, ExerciseModule],
-  exports: [],
+  exports: [TrainHistoryExerciseService],
   providers: [TrainHistoryExerciseService, TrainHistoryExerciseRepository],
   controllers: [TrainHistoryExerciseController],
 })

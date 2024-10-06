@@ -7,6 +7,6 @@ import { MuscleSerieController } from './controller/muscle-serie.controller';
   controllers: [MuscleSerieController],
   providers: [MuscleSerieRepository, MuscleSerieService],
   imports: [],
-  exports: [],
+  exports: [MuscleSerieService],
 })
 export class MuscleSerieModule {}
