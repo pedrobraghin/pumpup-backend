@@ -10,6 +10,7 @@ import { CardioSerieModule } from './modules/cardio-serie/cardio-serie.module';
 import { TrainHistoryModule } from './modules/train-history/train-history.module';
 import { TrainHistoryExerciseModule } from './modules/train-history-exercise/train-history-exercise.module';
 import { TrainHistoryExerciseSerieModule } from './modules/train-history-exercise-serie/train-history-exercise-serie.module';
+import { WebhookModule } from './modules/webhook/webhook.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TrainHistoryExerciseSerieModule } from './modules/train-history-exercis
     TrainHistoryModule,
     TrainHistoryExerciseModule,
     TrainHistoryExerciseSerieModule,
+    WebhookModule,
   ],
   controllers: [],
   providers: [],
